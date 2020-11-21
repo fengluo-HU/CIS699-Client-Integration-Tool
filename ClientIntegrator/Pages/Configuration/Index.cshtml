@@ -1,0 +1,172 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Configuration Management";
+}
+
+<h3 class="pb-2">Configuration Management</h3>
+
+
+@if (Model.Configurations == null || Model.Configurations.Count == 0)
+{
+<div class="container">
+    <div class="col-12 py-1">
+        <a class="btn btn-primary py-1" asp-page="./Edit">Create Configuration</a>
+    </div>
+    <div class="p-5 bg-light my-5 rounded text-center">
+        <p class="text-muted">
+            There are no records available.
+        </p>
+    </div>
+</div>
+}
+else
+{
+    <div class="container" id="configurationPage">
+        <table class="table border" id='prescriberSourceListItems'>
+            <thead>
+                <tr>
+                    <th scope="col" class="font-weight-bold text-nowrap pl-0">
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="OrganizationName"
+                           asp-route-sortOrder="@Model.SortOrder"
+                           asp-route-selectedOrgId="@Model.SelectedOrgId"
+                           class="btn btn-link font-weight-bold tableButton">Organization Name</a>
+                    </th>
+
+                    <th scope="col" class="font-weight-bold text-nowrap pl-0">
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="Key"
+                           asp-route-sortOrder="@Model.SortOrder"
+                           asp-route-selectedOrgId="@Model.SelectedOrgId"
+                           class="btn btn-link font-weight-bold tableButton">Key</a>
+                    </th>
+
+                    <th scope="col" class="font-weight-bold text-nowrap pl-0">
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="Value"
+                           asp-route-sortOrder="@Model.SortOrder"
+                           asp-route-selectedOrgId="@Model.SelectedOrgId"
+                           class="btn btn-link font-weight-bold tableButton">Value</a>
+                    </th>
+
+                    <th scope="col" class="font-weight-bold text-nowrap d-none d-xl-table-cell pl-0">
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="Notes"
+                           asp-route-sortOrder="@Model.SortOrder"
+                           asp-route-selectedOrgId="@Model.SelectedOrgId"
+                           class="btn btn-link font-weight-bold tableButton">Notes</a>
+                    </th>
+
+                    <th scope="col" class="font-weight-bold text-nowrap d-none d-md-table-cell pl-0">
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="CreateDate"
+                           asp-route-sortOrder="@Model.SortOrder"
+                           asp-route-selectedOrgId="@Model.SelectedOrgId"
+                           class="btn btn-link font-weight-bold tableButton">Create Date</a>
+                    </th>
+
+                    <th scope="col" class="font-weight-bold text-nowrap d-none d-lg-table-cell pl-0">
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="CreateBy"
+                           asp-route-sortOrder="@Model.SortOrder"
+                           asp-route-selectedOrgId="@Model.SelectedOrgId"
+                           class="btn btn-link font-weight-bold tableButton">Create By</a>
+                    </th>
+
+                    <th class="align-middle text-right">
+                        <a asp-page="./Edit" class="btn btn-success btn-sm add-btn" title="add">
+                            <img class="img-inverse" src="~/img/icon-plus.svg">
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Configurations)
+                {
+                    <tr>
+                        <td class="align-middle text-nowrap">
+                            <a asp-page="./Edit" asp-route-id="@item.Id" title="edit">
+                                <span>@item.OrganizationName</span>
+                            </a>
+                        </td>
+                        <td class="align-middle text-nowrap">
+                            <span>@item.Key</span>
+                        </td>
+                        <td class="align-middle text-nowrap">
+                            <span>@item.Value</span>
+                        </td>
+                        <td class="align-middle text-nowrap d-none d-xl-table-cell">
+                            <span>@item.Notes</span>
+
+                        </td>
+                        <td class="align-middle text-nowrap d-none d-md-table-cell">
+                            <span>@item.CreateAt</span>
+                        </td>
+                        <td class="align-middle text-nowrap d-none d-lg-table-cell">
+                            <span>@item.CreateBy</span>
+                        </td>
+                        <td class="align-middle text-right">
+                            <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-secondary btn-sm edit-list-btn" title="edit">
+                                <img src="~/img/icon-edit.svg">
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (Model.Configurations.TotalPages > 1)
+        {
+            var prevDisabled = !Model.Configurations.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.Configurations.HasNextPage ? "disabled" : "";
+            <div id="paginator" class="btn-group mb-3 ">
+                <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.CurrentOrder"
+                   asp-route-sortColumn="@Model.SortColumn"
+                   asp-route-pageIndex="1"
+                   class="btn btn-outline-primary border-right-0 @prevDisabled">
+                    First
+                </a>
+                <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.CurrentOrder"
+                   asp-route-sortColumn="@Model.SortColumn"
+                   asp-route-pageIndex="@(Model.Configurations.PageIndex - 1)"
+                   class="btn btn-outline-primary border-right-0 @prevDisabled">
+                    Previous
+                </a>
+                @{
+                    foreach (var currentPage in Model.Configurations.Pages)
+                    {
+                        var focus = Model.Configurations.PageIndex == currentPage ? "active focus" : "";
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.CurrentOrder"
+                           asp-route-sortColumn="@Model.SortColumn"
+                           asp-route-pageIndex="@(currentPage)"
+                           class="btn btn-outline-primary border-right-0 @focus">
+                            @currentPage
+                        </a>
+                    }
+                }
+                <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.CurrentOrder"
+                   asp-route-sortColumn="@Model.SortColumn"
+                   asp-route-pageIndex="@(Model.Configurations.PageIndex + 1)"
+                   class="btn btn-outline-primary border-right-0 @nextDisabled">
+                    Next
+                </a>
+                <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.CurrentOrder"
+                   asp-route-sortColumn="@Model.SortColumn"
+                   asp-route-pageIndex="@Model.Configurations.TotalPages"
+                   class="btn btn-outline-primary @nextDisabled">
+                    Last
+                </a>
+            </div>
+        }
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.Message))
+{
+    <partial name="_ModalMessage" model="@Model.Message" />
+}

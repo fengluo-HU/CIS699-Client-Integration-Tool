@@ -1,0 +1,102 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ClientIntegrator.DataAccess.Models
+@using Microsoft.Extensions.Configuration
+@using ClientIntegrator.Common.Services
+@using ClientIntegrator.Common.Extensions
+@inject SignInManager<PortalUser> SignInManager
+@inject UserManager<PortalUser> UserManager
+@inject IConfiguration Configuration
+@inject ILayoutService LayoutService
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto h5">
+            <li class="nav-item">
+                <a class="nav-item nav-link" asp-page="/Configuration/Index">Configuration</a>
+            </li>
+            @if (User.IsInRole("SuperUser"))
+            {
+                <li class="nav-item">
+                    <a class="nav-item nav-link" asp-page="/Organization/Index">Organization</a>
+                </li>
+            }
+
+        </ul>
+
+        <div>
+            <div class="d-flex align-items-center">
+                <label>
+                    <div class=" col d-flex align-items-center pr-1">
+                        <img class="mr-2 user-avatar" src="~/img/user-circle.png" alt="user circle" />
+                        <div>@User.Identity.Name</div>
+                        <div class="dropdown">
+                            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                @if (User.IsInRole("Admin") || User.IsInRole("SuperUser"))
+                                {
+                                    <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Users/Index">Manage users</a></li>
+                                }
+                                <li>
+                                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Configuration/Index", new { area = "" })">
+                                        <button type="submit" class="dropdown-item" id="logoutButton">Log out</button>
+                                    </form>
+                                <li>
+                            </ul>
+                        </div>
+                    </div>
+                </label>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <label>
+                    @{
+                        var userId = User.GetLoggedInUserId<long>();
+                        var org = await LayoutService.GetOrganizationByUserId(userId);
+                        var buttonText = org == null ? "Change Organization" : "";
+                        var numOfCharsAllowed = Convert.ToInt32(Configuration["NumOfCharsAllowed"]);
+                        var orgName = org != null ? org.DisplayName.Truncate(numOfCharsAllowed) : "";
+                    }
+                    <div class="col d-flex align-items-center pr-2">
+                        <div class="small mr-2 noWrap" id="orgNameSpan" title="@org?.DisplayName">@orgName</div>
+                        @if (User.IsInRole("SuperUser"))
+                        {
+                            <div class="dropdown">
+                                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@buttonText</button>
+                                <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a asp-route-selectedOrgId="0"
+                                           asp-page="/Configuration/Index"
+                                           asp-page-handler="SetSelectedOrganization"
+                                           title="All Organizations"
+                                           class="orgLink dropdown-item">
+                                            All
+                                        </a>
+                                    </li>
+                                    @{
+                                        var orgs = await LayoutService.GetOrganizationsForSuperUser(userId);
+                                        @if (orgs != null)
+                                        {
+                                            @foreach (var organization in orgs)
+                                            {
+                                                <li>
+                                                    <a asp-route-selectedOrgId="@organization.Id"
+                                                       asp-page="/Configuration/Index"
+                                                       asp-page-handler="SetSelectedOrganization"
+                                                       title="@organization.DisplayName"
+                                                       class="orgLink dropdown-item">
+                                                        @organization.DisplayName.Truncate(@numOfCharsAllowed)
+                                                    </a>
+                                                </li>
+                                            }
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
+}

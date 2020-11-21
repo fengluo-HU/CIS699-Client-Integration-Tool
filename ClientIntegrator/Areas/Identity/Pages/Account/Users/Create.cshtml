@@ -1,0 +1,82 @@
+@page
+@using System;
+@using ClientIntegrator.Common.Extensions;
+@using System.Linq;
+@model ClientIntegrator.Areas.Identity.Pages.Account.Manage.Users.CreateUserModel
+@{
+    ViewData["Title"] = "Create a new user account";
+}
+
+<h2>@ViewData["Title"]</h2>
+<div class="bg-light p-2 border-primary border-top breakout">
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <form id="registerForm" method="post" autocomplete="off">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Input.Email"></label>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Password"></label>
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.ConfirmPassword"></label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    @if (!Model.Input.CreateSuperUser)
+                    {
+                        if (User.IsSuperUser())
+                        {
+                            <div class="form-group">
+                                <label asp-for="Input.OrganizationId"></label>
+                                <select id="createUserOrgDd" class="form-control" asp-for="Input.OrganizationId" asp-items="Model.Organizations">
+                                    <option value="">Choose an organization</option>
+                                </select>
+                                <span asp-validation-for="Input.OrganizationId" class="text-danger"></span>
+                            </div>
+                        }
+                        else
+                        {
+                            <input type="hidden" asp-for="Input.OrganizationId" />
+                        }
+                        <div class="form-group">
+                            <label asp-for="Input.Roles"></label>
+                            <ul id="createUserRoleCbl" class="list-group list-group-flush">
+                                @foreach (var role in Model.UserRoles)
+                                {
+                                    <li class="list-group-item">
+                                        <div class="custom-control custom-checkbox">
+                                            <input name="Input.Roles" type="checkbox" class="custom-control-input" id="@role.Value" value="@role.Value" />
+                                            <label class="custom-control-label" for="@role.Value">@role.Text</label>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                            <input name="Input.Roles" type="checkbox" class="custom-control-input" id="USER" value="USER" hidden="hidden" checked="checked" />
+                            <input type="hidden" id="selectedRoles" value="@(Model.Input?.Roles != null ? String.Join(",", Model.Input.Roles).ToUpper() : "")" />
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(x => x.Input.CreateSuperUser)
+                        <input type="hidden" asp-for="Input.OrganizationId" />
+                    }
+
+                    <button id="registerSubmit" type="submit" class="btn btn-primary">Create User</button>
+                    <a class="btn btn-secondary" asp-page="./Index">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

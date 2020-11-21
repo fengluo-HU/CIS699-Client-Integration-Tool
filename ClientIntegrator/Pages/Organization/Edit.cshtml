@@ -1,0 +1,62 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using ClientIntegrator.DataAccess.Models
+@inject SignInManager<PortalUser> SignInManager
+@inject UserManager<PortalUser> UserManager
+@model EditOrganizationModel
+@{
+    ViewData["Title"] = Model.Organization.Id != 0 ? "Update Organization" : "Create Organization";
+}
+
+@if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("SuperUser")))
+{
+    <h2>@ViewData["Title"]</h2>
+    <div class="bg-light p-2 border-primary border-top breakout">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <form method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        @if (Model.Organization.Id != 0)
+                        {
+                            <div class="form-group">
+                                <label asp-for="Input.Id"></label>
+                                <input asp-for="Input.Id" class="form-control" autocomplete="off" value="@Model.Organization.Id" disabled />
+                            </div>
+                        }
+                        <input asp-for="Input.Id" value="@Model.Organization.Id" type="hidden" />
+
+                        <div class="form-group">
+                            <label asp-for="Input.ClientId"></label>
+                            <input asp-for="Input.ClientId" class="form-control" autocomplete="off" value="@Model.Organization.ClientId" />
+                            <span asp-validation-for="Input.ClientId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Input.ClientSecret"></label>
+                            <input asp-for="Input.ClientSecret" class="form-control" autocomplete="off" value="@Model.Organization.ClientSecret" />
+                            <span asp-validation-for="Input.ClientSecret" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Name"></label>
+                            <input asp-for="Input.Name" class="form-control" autocomplete="off" value="@Model.Organization.DisplayName" />
+                            <span asp-validation-for="Input.Name" class="text-danger"></span>
+                        </div>
+                        @if (Model.Organization.Id != 0)
+                        {
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        }
+                        <a class="btn btn-secondary" asp-page="./Index">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

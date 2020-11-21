@@ -1,0 +1,105 @@
+﻿@page
+@model ClientIntegrator.Areas.Identity.Pages.Account.Manage.Users.IndexModel
+@{
+    ViewData["Title"] = "Manage user accounts";
+}
+
+<div class="bg-light p-2 border-primary border-top breakout">
+    <div class="container">
+        <div class="row">
+            <a class="btn btn-primary m-2" asp-page="./Create" role="button">Add new user</a>
+        </div>
+
+        <form asp-page="./Index" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    Search by Email:
+                    <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+                    <input type="submit" value="Search" class="btn btn-primary" /> |
+                    <a asp-page="./Index">Reset</a>
+                </p>
+            </div>
+        </form>
+
+        <div class="row">
+            <table class="table" summary="List of active users">
+                <tr>
+                    <th scope="col">
+                        <a asp-page="./Index" asp-route-sortOrder="@Model.IdSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            ID
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a asp-page="./Index" asp-route-sortOrder="@Model.EmailSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            Email
+                        </a>
+                    </th>
+                    <th scope="col">
+                        Is Active
+                    </th>
+                    <th scope="col">
+                        Organization
+                    </th>
+                    <th scope="col">
+                        Role(s)
+                    </th>
+                    <th scope="col"></th>
+                </tr>
+
+                @foreach (var item in Model.Users)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.Raw(item.IsActive ? "Yes" : "No")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrganizationName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Roles)
+                        </td>
+                        <td>
+                            @if (!item.Roles.Contains("SuperUser"))
+                            {
+                                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            @if (Model.Users.TotalPages > 1)
+            {
+                var prevDisabled = !Model.Users.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.Users.HasNextPage ? "disabled" : "";
+
+                <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.CurrentSort"
+                   asp-route-pageIndex="@(Model.Users.PageIndex - 1)"
+                   asp-route-currentFilter="@Model.CurrentFilter"
+                   class="btn btn-primary m-2 @prevDisabled">
+                    Previous
+                </a>
+                <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.CurrentSort"
+                   asp-route-pageIndex="@(Model.Users.PageIndex + 1)"
+                   asp-route-currentFilter="@Model.CurrentFilter"
+                   class="btn btn-primary m-2 @nextDisabled">
+                    Next
+                </a>
+
+                <span class="m-2">
+                    Page @Model.Users.PageIndex / @Model.Users.TotalPages
+                </span>
+            }
+        </div>
+    </div>
+</div>

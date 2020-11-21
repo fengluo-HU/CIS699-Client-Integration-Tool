@@ -1,0 +1,61 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using ClientIntegrator.DataAccess.Models
+@using Microsoft.Extensions.Configuration
+@inject SignInManager<PortalUser> SignInManager
+@inject UserManager<PortalUser> UserManager
+@inject IConfiguration Configuration
+@model OrganizationModel
+@{
+    ViewData["Title"] = "Organization Setup";
+}
+
+    <h3 class="pb-2">Organization Setup</h3>
+
+@if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("SuperUser")))
+{
+    @if (Model.Organizations != null && Model.Organizations.Count == 0)
+    {
+<div class="container">
+    <div class="col-12 py-1">
+        <a class="btn btn-primary py-1" asp-page="./Edit">Create Organization</a>
+    </div>
+    <div class="p-5 bg-light my-5 rounded text-center">
+        <p class="text-muted">
+            There are no items available.
+        </p>
+    </div>
+</div>
+    }
+    else
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-12 py-1">
+                    <a class="btn btn-primary py-1" asp-page="./Edit">Create Organization</a>
+                </div>
+            </div>
+            <table class="table border">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>ClientId</th>
+                        <th>ClientSecret</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Organizations)
+                    {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td><a asp-page="./Edit" asp-route-id="@item.Id">@item.DisplayName</a></td>
+                        <td>@item.ClientId</td>
+                        <td>@item.ClientSecret</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

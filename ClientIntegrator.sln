@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientIntegrator", "ClientIntegrator\ClientIntegrator.csproj", "{851D8FC1-BA49-467B-B429-718D0127F7CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientIntegrator.DataAccess", "ClientIntegrator.DataAccess\ClientIntegrator.DataAccess.csproj", "{4D50F4CE-49A3-401C-9689-9FF6FF7B2D1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{851D8FC1-BA49-467B-B429-718D0127F7CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{851D8FC1-BA49-467B-B429-718D0127F7CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{851D8FC1-BA49-467B-B429-718D0127F7CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{851D8FC1-BA49-467B-B429-718D0127F7CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D50F4CE-49A3-401C-9689-9FF6FF7B2D1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D50F4CE-49A3-401C-9689-9FF6FF7B2D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D50F4CE-49A3-401C-9689-9FF6FF7B2D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D50F4CE-49A3-401C-9689-9FF6FF7B2D1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4CC6C150-3C9A-465F-B391-ED0C7A8E91D3}
+	EndGlobalSection
+EndGlobal

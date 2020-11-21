@@ -1,0 +1,67 @@
+@page
+@using System;
+@using System.Linq;
+@model ClientIntegrator.Areas.Identity.Pages.Account.Manage.Users.EditUserModel;
+@{
+    ViewData["Title"] = "Update user account.";
+}
+
+<h2>@ViewData["Title"]</h2>
+<div class="bg-light p-2 border-primary border-top breakout">
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <form method="post">
+                    <input type="hidden" asp-for="Input.Id" />
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="UserName"></label>
+                        <label class="form-control readonlyElement">@Model.UserName</label>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Password"></label>
+                        <input asp-for="Input.Password" class="form-control" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.ConfirmPassword"></label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.IsActive"></label>
+                        <input type="checkbox" asp-for="Input.IsActive" />
+                        <span asp-validation-for="Input.IsActive" class="text-danger"></span>
+                    </div>
+
+                    <input type="hidden" asp-for="Input.OrganizationId" />
+                    <div class="form-group">
+                        <label asp-for="Input.Roles"></label>
+                        <ul id="editUserRoleCbl" class="list-group list-group-flush">
+                            @foreach (var role in Model.UserRoles)
+                            {
+                                var isChecked = Model.Input.Roles.Any(r => r.ToUpper() == role.Value.ToUpper()) ? "checked" : "";
+                                <li class="list-group-item">
+                                    <div class="custom-control custom-checkbox">
+                                        <input name="Input.Roles" type="checkbox" class="custom-control-input" id="@role.Value" value="@role.Value" @isChecked />
+                                        <label class="custom-control-label" for="@role.Value">@role.Text</label>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                        <input name="Input.Roles" type="checkbox" class="custom-control-input" id="USER" value="USER" hidden="hidden" checked="checked" />
+                        <input type="hidden" id="currentRoles" value="@String.Join(",", Model.Input.Roles).ToUpper()" />
+                    </div>
+
+                    <input type="submit" value="Save Changes" class="btn btn-primary" />
+                    <a class="btn btn-secondary" asp-page="./Index">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

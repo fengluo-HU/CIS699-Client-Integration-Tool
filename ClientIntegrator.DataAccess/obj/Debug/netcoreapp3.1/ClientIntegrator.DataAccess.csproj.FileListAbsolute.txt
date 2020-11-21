@@ -1,0 +1,10 @@
+C:\Users\Ken\Desktop\CC\HU\Artchitecure\ClientIntegrator\ClientIntegrator.DataAccess\bin\Debug\netcoreapp3.1\ClientIntegrator.DataAccess.deps.json
+C:\Users\Ken\Desktop\CC\HU\Artchitecure\ClientIntegrator\ClientIntegrator.DataAccess\bin\Debug\netcoreapp3.1\ClientIntegrator.DataAccess.runtimeconfig.json
+C:\Users\Ken\Desktop\CC\HU\Artchitecure\ClientIntegrator\ClientIntegrator.DataAccess\bin\Debug\netcoreapp3.1\ClientIntegrator.DataAccess.runtimeconfig.dev.json
+C:\Users\Ken\Desktop\CC\HU\Artchitecure\ClientIntegrator\ClientIntegrator.DataAccess\bin\Debug\netcoreapp3.1\ClientIntegrator.DataAccess.dll
+C:\Users\Ken\Desktop\CC\HU\Artchitecure\ClientIntegrator\ClientIntegrator.DataAccess\bin\Debug\netcoreapp3.1\ClientIntegrator.DataAccess.pdb
+C:\Users\Ken\Desktop\CC\HU\Artchitecure\ClientIntegrator\ClientIntegrator.DataAccess\obj\Debug\netcoreapp3.1\ClientIntegrator.DataAccess.AssemblyInfoInputs.cache
+C:\Users\Ken\Desktop\CC\HU\Artchitecure\ClientIntegrator\ClientIntegrator.DataAccess\obj\Debug\netcoreapp3.1\ClientIntegrator.DataAccess.AssemblyInfo.cs
+C:\Users\Ken\Desktop\CC\HU\Artchitecure\ClientIntegrator\ClientIntegrator.DataAccess\obj\Debug\netcoreapp3.1\ClientIntegrator.DataAccess.dll
+C:\Users\Ken\Desktop\CC\HU\Artchitecure\ClientIntegrator\ClientIntegrator.DataAccess\obj\Debug\netcoreapp3.1\ClientIntegrator.DataAccess.pdb
+C:\Users\Ken\Desktop\CC\HU\Artchitecure\ClientIntegrator\ClientIntegrator.DataAccess\obj\Debug\netcoreapp3.1\ClientIntegrator.DataAccess.csprojAssemblyReference.cache
